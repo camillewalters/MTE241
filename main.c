@@ -106,8 +106,9 @@ void initializeScreen(void){
 
 //displays when snake touches itself or the barrier. Will display message in the middle of the screen
 void youLose(void){
-	int baseSpeed = osKernelGetTickFreq(); //figure out speed in ticks
 	char message[]="You Lose!";
+	GLCD_Clear(0);
+	GLCD_SetBackColor(0);
 	GLCD_SetTextColor(0xFFFF);
 	GLCD_DisplayString(5,5,1,message);
 	osDelay(osWaitForever);
@@ -274,25 +275,29 @@ void snake(void *arg){
 	while (1){
 		if(direction=='R'){
 			sum=screen[worm[0].x+1][worm[0].y]+1;
-			if (worm[0].x==40){
+			if (worm[0].x==39){
+				osThreadTerminate(snake);
 				youLose();
 			}	
 		}
 		else if(direction=='L'){
 			sum=screen[worm[0].x-1][worm[0].y]+1;
 			if (worm[0].x==1){
+				osThreadTerminate(snake);
 				youLose();
 			}	
 		}
 		else if(direction=='U'){
 			sum=screen[worm[0].x][worm[0].y-1]+1;
 			if (worm[0].y==1){
+				osThreadTerminate(snake);
 				youLose();
 			}	
 		}
 		else if (direction=='D'){
 			sum=screen[worm[0].x][worm[0].y+1]+1;
 			if (worm[0].y==27){
+				osThreadTerminate(snake);
 				youLose();
 			}	
 		}
